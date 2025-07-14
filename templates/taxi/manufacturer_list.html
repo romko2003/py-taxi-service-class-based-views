@@ -1,12 +1,30 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
+
+{% block title %}Manufacturers - Taxi Service{% endblock %}
 
 {% block content %}
-  <h2>Manufacturers</h2>
-  <table>
-    <tr><th>Name</th><th>Country</th></tr>
-    {% for manufacturer in object_list %}
-      <tr><td>{{ manufacturer.name }}</td><td>{{ manufacturer.country }}</td></tr>
-    {% endfor %}
-  </table>
-  {% include "includes/pagination.html" %}
+  <h1>Manufacturers</h1>
+  
+  {% if manufacturer_list %}
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Country</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for manufacturer in manufacturer_list %}
+          <tr>
+            <td>{{ manufacturer.id }}</td>
+            <td>{{ manufacturer.name }}</td>
+            <td>{{ manufacturer.country }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p>No manufacturers available.</p>
+  {% endif %}
 {% endblock %}
