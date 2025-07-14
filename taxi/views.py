@@ -1,20 +1,17 @@
-from django.shortcuts import render
-
-from taxi.models import Driver, Car, Manufacturer
-from django.views.generic import ListView
-from django.views.generic import DetailView
+from django.views.generic import ListView, DetailView
+from .models import Manufacturer, Car, Driver
+from django.db.models import Prefetch
 
 
 class ManufacturerListView(ListView):
     model = Manufacturer
-    queryset = Manufacturer.objects.order_by("name")
+    queryset = Manufacturer.objects.all().order_by("name")
     paginate_by = 5
 
 
 class CarListView(ListView):
     model = Car
-    queryset = (Car.objects.select_related("manufacturer").
-                prefetch_related("drivers"))
+    queryset = Car.objects.select_related("manufacturer").prefetch_related("drivers")
     paginate_by = 5
 
 
@@ -29,4 +26,6 @@ class DriverListView(ListView):
 
 class DriverDetailView(DetailView):
     model = Driver
-    queryset = Driver.objects.prefetch_related("car_set__manufacturer")
+    queryset = Driver.objects.prefetch_related(
+        Prefetch("cars", queryset=Car.objects.select_related("manufacturer"))
+    )
