@@ -7,6 +7,8 @@ from .views import (
     DriverDetailView,
 )
 
+app_name = "taxi"
+
 urlpatterns = [
     path("manufacturers/", ManufacturerListView.as_view(),
          name="manufacturer-list"),
